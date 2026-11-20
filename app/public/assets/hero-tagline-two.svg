@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="330.827" height="47.9608" viewBox="0 0 330.827 47.9608" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="frase 2 HP" filter="url(#filter0_f_0_66)">
+<path d="M4.00024 20.444C3.95233 11.5814 11.1177 4.3684 19.9803 4.3575L310.766 4.00001C319.577 3.98918 326.738 11.1032 326.785 19.9135L326.827 27.5169C326.874 36.3794 319.709 43.5925 310.846 43.6033L165.52 43.782L20.0608 43.9608C11.2503 43.9717 4.08896 36.8577 4.04134 28.0473L4.00024 20.444Z" fill="#F2EAF6"/>
+</g>
+<defs>
+<filter id="filter0_f_0_66" x="0" y="1.08033e-07" width="330.827" height="47.9608" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_0_66"/>
+</filter>
+</defs>
+</svg>

@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="56" height="54.5" viewBox="0 0 56 54.5" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Group 162544">
+<g id="Rectangle 9604">
+<use xlink:href="#stroke0_0_85" fill="white"/>
+<mask id="stroke1_0_85" fill="white">
+<use xlink:href="#stroke0_0_85"/>
+</mask>
+<path d="M10 54.5L15 49.25L15.8621 48.3448C18.5045 45.5703 22.1685 44 26 44H42C49.732 44 56 37.732 56 30V14C56 6.26801 49.732 0 42 0H14C6.26801 0 0 6.26801 0 14V38.9672C0 41.7467 2.25326 44 5.0328 44C7.78659 44 10.029 46.2132 10.0652 48.9668L10.1333 54.1603C10.135 54.2866 10.0871 54.4085 10 54.5Z" stroke-width="6" stroke="#6845D3" mask="url(#stroke1_0_85)"/>
+</g>
+<circle id="Ellipse 7" cx="17" cy="23" r="4" fill="#6845D3"/>
+<circle id="Ellipse 8" cx="28" cy="23" r="4" fill="#6845D3"/>
+<circle id="Ellipse 9" cx="39" cy="23" r="4" fill="#6845D3"/>
+</g>
+<defs>
+<path id="stroke0_0_85" d="M0 14C0 6.26801 6.26801 0 14 0H42C49.732 0 56 6.26801 56 14V30C56 37.732 49.732 44 42 44H26C22.1685 44 18.5045 45.5703 15.8621 48.3448L15 49.25L10 54.5C10.0871 54.4085 10.135 54.2866 10.1333 54.1603L10.0652 48.9668C10.029 46.2132 7.78659 44 5.0328 44C2.25326 44 0 41.7467 0 38.9672V14Z"/>
+</defs>
+</svg>

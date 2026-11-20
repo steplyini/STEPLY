@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="139.928" height="46.9062" viewBox="0 0 139.928 46.9062" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Bot&#195;&#163;o de entrar HP" filter="url(#filter0_d_0_90)">
+<path d="M4.00004 16.3293C3.98003 7.49695 11.1207 0.319028 19.9531 0.293122L119.866 7.03186e-05C128.706 -0.0258601 135.893 7.12305 135.913 15.9638L135.928 22.5769C135.948 31.4093 128.807 38.5872 119.975 38.6131L70.0076 38.7597L20.0619 38.9062C11.2212 38.9321 4.03506 31.7832 4.01503 22.9425L4.00004 16.3293Z" fill="#F2EAF6"/>
+</g>
+<defs>
+<filter id="filter0_d_0_90" x="-8.19564e-08" y="0" width="139.928" height="46.9062" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_90"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_90" result="shape"/>
+</filter>
+</defs>
+</svg>

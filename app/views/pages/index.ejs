@@ -1,75 +1,196 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steply</title>
-    <link rel="stylesheet" href="../public/css/estilo.css">
+    <meta name="theme-color" content="#ffffff">
+    <title>Steply — negócios perto de você</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script defer src="/js/home.js"></script>
 </head>
-
 <body>
-<header>
-    <h1>Steply</h1>
+    <main class="homepage" id="inicio">
+        <div class="homepage__glow homepage__glow--blue" aria-hidden="true"></div>
+        <div class="homepage__glow homepage__glow--warm homepage__glow--search" aria-hidden="true"></div>
+        <div class="homepage__glow homepage__glow--warm homepage__glow--map" aria-hidden="true"></div>
 
-    <p>Plataforma que conecta pequenos negócios da sua região</p>
+        <header class="site-header">
+            <a class="brand" href="#inicio" aria-label="Steply — início">
+                <img src="/assets/logo.png" alt="Steply">
+            </a>
 
-    <form>
-        <input type="text" name="pesquisa" placeholder="Pesquisar">
-        <input type="submit" value="Procurar">
-    </form>
-</header>
+            <a class="login-button" href="#junte-se">
+                <img src="/assets/login-button.svg" alt="" aria-hidden="true">
+                <span>Entrar</span>
+            </a>
 
-<main>
+            <form class="header-search" action="/" method="get" role="search">
+                <label class="visually-hidden" for="header-query">Pesquisar</label>
+                <img class="header-search__shape" src="/assets/search-bubble.svg" alt="" aria-hidden="true">
+                <img src="/assets/search.png" alt="" aria-hidden="true">
+                <input id="header-query" type="search" name="pesquisa" placeholder="Pesquisar">
+            </form>
+        </header>
 
-    <section>
-        <h2>Encontre, apoie efortaleça negócios da sua região</h2>
-        <p>Descubra produtos e serviços incríveis de empreendedores perto de você.</p>
-    </section>
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero__tagline hero__tagline--first">
+                <img src="/assets/hero-tagline-one.svg" alt="" aria-hidden="true">
+                <span>Plataforma que conecta</span>
+            </div>
+            <div class="hero__tagline hero__tagline--second">
+                <img src="/assets/hero-tagline-two.svg" alt="" aria-hidden="true">
+                <span>Pequenos negócios da sua região</span>
+            </div>
 
-    <section>
-        <h2>Como funciona?</h2>
-        <p>
-            Nosso site ajuda pequenos negócios e prestadores de serviço do bairro a serem encontrados por mais pessoas. O usuário pesquisa o que procura e encontra opções próximas, valorizando o comércio local.
-        </p>
+            <h1 class="hero__title" id="hero-title">
+                Encontre, apoie e<br>
+                fortaleça negócios<br>
+                <span>da sua região</span>
+            </h1>
+            <p class="hero__description">
+                Descubra produtos e serviços incríveis<br>
+                de empreendedores perto de você.
+            </p>
+            <img class="hero__illustration" src="/assets/hero-illustration.png" alt="Ilustração da plataforma Steply com serviços e negócios locais">
+        </section>
 
-        <ul>
-            <li>Encontre o serviço ideal bem do seu lado </li>
-            <li>Contato direto pelo App</li>
-            <li>Preços justos e transparentes</li>
-        </ul>
-    </section>
+        <section class="how-it-works" id="como-funciona" aria-labelledby="how-title">
+            <h2 class="how-it-works__title" id="how-title">Como funciona?</h2>
+            <p class="how-it-works__description">
+                Nosso site ajuda pequenos negócios e prestadores de serviço do bairro a serem encontrados por mais pessoas. O usuário pesquisa o que procura e encontra opções próximas, valorizando o comércio local.
+            </p>
 
-    <section>
-        <h2>Precisa de algo?</h2>
+            <article class="benefit benefit--location">
+                <img src="/assets/benefit-location.svg" alt="" aria-hidden="true">
+                <h3>Encontre o serviço ideal<br>bem do seu lado</h3>
+            </article>
+            <article class="benefit benefit--contact">
+                <div class="benefit__chat-icon" aria-hidden="true">
+                    <img class="benefit__chat-frame" src="/assets/benefit-chat-frame.svg" alt="">
+                    <img class="benefit__chat benefit__chat--one" src="/assets/benefit-chat-one.svg" alt="">
+                    <img class="benefit__chat benefit__chat--two" src="/assets/benefit-chat-two.svg" alt="">
+                </div>
+                <h3>Contato direto<br>pelo App</h3>
+            </article>
+            <article class="benefit benefit--pricing">
+                <img src="/assets/benefit-pricing.svg" alt="" aria-hidden="true">
+                <h3>Preços justos<br>e transparentes</h3>
+            </article>
+        </section>
 
-        <form>
-            <p>O que você procura?</p>
-            <input type="text" name="servico" placeholder="Ex: eletricista">
+        <section class="search-section" id="buscar" aria-labelledby="search-title">
+            <h2 class="search-section__intro" id="search-title">Precisando de algo<br>específico?</h2>
+            <form class="service-search" action="/" method="get" role="search">
+                <div class="search-field search-field--first">
+                    <label class="visually-hidden" for="quick-search">Pesquisar serviço</label>
+                    <img src="/assets/search.png" alt="" aria-hidden="true">
+                    <input id="quick-search" type="search" name="pesquisa">
+                </div>
 
-            <p>Bairro ou cidade</p>
-            <input type="text" name="local" placeholder="Ex: Jandira">
-            <!-- gambiarra abaixo -->
-            <p></p>
+                <h3 class="service-search__heading service-search__heading--service">Encontre profissionais na<br>sua região</h3>
+                <label class="service-search__label service-search__label--service" for="service-name">O que você precisa?</label>
+                <div class="search-field search-field--service">
+                    <img src="/assets/search.png" alt="" aria-hidden="true">
+                    <input id="service-name" type="text" name="servico">
+                </div>
 
-            <input type="submit" value="Buscar">
-        </form>
-    </section>
+                <label class="service-search__label service-search__label--location" for="service-location">Cidade ou Bairro?</label>
+                <div class="search-field search-field--location">
+                    <img src="/assets/search.png" alt="" aria-hidden="true">
+                    <input id="service-location" type="text" name="local">
+                </div>
 
-    <section>
-        <h2>NOSSOS SERVIÇOS</h2>
-        <p>Trabalho profissionais e de qualidade</p>
+                <button class="service-search__submit" type="submit">BUSCAR AGORA</button>
+            </form>
+        </section>
 
-        <!-- Aqui vai aparecer os profissionais -->
+        <section class="services" id="servicos" aria-labelledby="services-title">
+            <h2 class="services__title" id="services-title">NOSSOS SERVIÇOS</h2>
+            <p class="services__subtitle">Trabalho profissional e de qualidade</p>
 
-        <h3>Cresça com a plataforma</h3>
-        <p></p>
-    </section>
+            <div class="services-carousel" aria-label="Serviços em destaque">
+                <div class="services-carousel__window">
+                    <div class="services-carousel__track">
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-cabeleireira.png" alt="Profissional trabalhando em cabelo">
+                            <h3>Cabelereira</h3>
+                            <p>Elevando sua<br>autoestima</p>
+                        </article>
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-pedreiro.png" alt="Profissional realizando trabalho de alvenaria">
+                            <h3>Pedreiro</h3>
+                            <p>Qualidade a<br>cada tijolo</p>
+                        </article>
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-pintor.png" alt="Profissional trabalhando com costura">
+                            <h3>Costureira</h3>
+                            <p>Arrumando suas<br>roupas</p>
+                        </article>
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-manicure.png" alt="Profissional pintando uma parede">
+                            <h3>Pintor</h3>
+                            <p>Levando cor<br>para sua casa</p>
+                        </article>
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-encanador.png" alt="Profissional realizando serviço de manicure">
+                            <h3>Manicure</h3>
+                            <p>Transformando<br>suas unhas</p>
+                        </article>
+                        <article class="service-card">
+                            <img class="service-card__photo" src="/assets/service-costureira.png" alt="Profissional realizando serviço de encanamento">
+                            <h3>Encanador</h3>
+                            <p>Resolvendo<br>infiltrações</p>
+                        </article>
+                        <img class="services-carousel__detail services-carousel__detail--first" src="/assets/service-brand.svg" alt="" aria-hidden="true">
+                        <img class="services-carousel__detail services-carousel__detail--second" src="/assets/service-decoration-two.svg" alt="" aria-hidden="true">
+                        <img class="services-carousel__detail services-carousel__detail--third" src="/assets/service-decoration-one.svg" alt="" aria-hidden="true">
+                    </div>
+                </div>
 
-</main>
+                <button class="services-carousel__control services-carousel__control--previous" type="button" aria-label="Ver serviços anteriores">
+                    <img src="/assets/carousel-control.png" alt="" aria-hidden="true">
+                </button>
+                <button class="services-carousel__control services-carousel__control--next" type="button" aria-label="Ver próximos serviços">
+                    <img src="/assets/carousel-control.png" alt="" aria-hidden="true">
+                </button>
+            </div>
+        </section>
 
-<footer>
-    <p>© Steply - 2026</p>
-</footer>
+        <section class="business" id="cresca" aria-labelledby="business-title">
+            <h2 class="business__title" id="business-title">Cresça com a plataforma</h2>
+            <p class="business__description">
+                Divulgue seu negócio com fotos, localização e contato. Clientes da sua região podem encontrar sua loja, conversar diretamente com você e conhecer seus produtos ou serviços. Com o plano Premium, seu negócio ganha mais destaque e aparece primeiro nas buscas.
+            </p>
+            <div class="business__map">
+                <img src="/assets/map-illustration.png" alt="Mapa com lupa destacando negócios próximos">
+            </div>
+        </section>
 
+        <footer class="site-footer" id="junte-se">
+            <h2 class="site-footer__title">Pronto pra encontrar o que precisa?</h2>
+            <p class="site-footer__join">Junte-se ao Steply</p>
+            <div class="site-footer__social">
+                <img src="/assets/app-badges.png" alt="Redes sociais do Steply">
+            </div>
+            <div class="site-footer__divider"></div>
+            <div class="site-footer__legal">
+                <p class="site-footer__security">
+                    <span class="site-footer__lock" aria-hidden="true">
+                        <span class="site-footer__lock-shackle"></span>
+                        <span class="site-footer__lock-body">
+                            <img src="/assets/footer-lock.svg" alt="">
+                        </span>
+                    </span>
+                    <span>Seus dados estão<br>seguros conosco.</span>
+                </p>
+                <nav class="site-footer__links" aria-label="Links legais">
+                    <a href="#termos">Termos</a>
+                    <img src="/assets/footer-dot.svg" alt="" aria-hidden="true">
+                    <a href="#privacidade">Privacidade</a>
+                </nav>
+            </div>
+            <p class="site-footer__copyright">© 2027 Steply</p>
+        </footer>
+    </main>
 </body>
 </html>
