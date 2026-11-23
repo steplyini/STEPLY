@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title><%= etapa === "cadastro" ? "Cadastro" : "Entrar" %> — Steply (<%= tituloPerfil %>)</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script defer src="/js/autenticacao.js"></script>
+</head>
+<body>
+    <main class="auth-page auth-page--<%= perfil %>-<%= etapa %>">
+        <div class="auth-glow auth-glow--warm" aria-hidden="true"></div>
+        <% if (etapa === "entrar") { %>
+            <div class="auth-glow auth-glow--blue" aria-hidden="true"></div>
+        <% } %>
+        <a class="auth-back" href="/" aria-label="Voltar para a página inicial">
+            <img src="/assets/autenticacao/voltar.jpg" alt="">
+        </a>
+        <h1 class="auth-title">Como <%= tituloPerfil %></h1>
+
+        <section class="auth-card" aria-label="<%= etapa === 'cadastro' ? 'Cadastro' : 'Acesso' %> de <%= tituloPerfil.toLowerCase() %>">
+            <nav class="auth-tabs" aria-label="Alternar entre entrar e cadastro">
+                <a class="auth-tabs__link <%= etapa === 'entrar' ? 'is-active' : '' %>" href="<%= rotaEntrar %>" <%= etapa === "entrar" ? 'aria-current="page"' : '' %>>Entrar</a>
+                <a class="auth-tabs__link <%= etapa === 'cadastro' ? 'is-active' : '' %>" href="<%= rotaCadastro %>" <%= etapa === "cadastro" ? 'aria-current="page"' : '' %>>Cadastre-se</a>
+            </nav>
+
+            <form class="auth-form <%= perfil === 'prestador' && etapa === 'cadastro' ? 'auth-form--provider' : '' %>" data-auth-form>
+                <% if (perfil === "prestador" && etapa === "cadastro") { %>
+                    <div class="provider-fields">
+                        <% const providerFields = [
+                            { label: "Nome completo:", name: "nome", top: 188, type: "text" },
+                            { label: "Nome comercial:", name: "nome-comercial", top: 261, type: "text" },
+                            { label: "Insira o e-mail:", name: "email", top: 364, type: "email" },
+                            { label: "Senha:", name: "senha", top: 441, type: "password" },
+                            { label: "Confirmar Senha:", name: "confirmar-senha", top: 512, type: "password" },
+                            { label: "Estado:", name: "estado", top: 615, type: "text" },
+                            { label: "Cidade:", name: "cidade", top: 686, type: "text" },
+                            { label: "CEP:", name: "cep", top: 757, type: "text" },
+                            { label: "Rua:", name: "rua", top: 828, type: "text" },
+                            { label: "Número:", name: "numero", top: 899, type: "text", left: 47, width: 102 },
+                            { label: "Complemento:", name: "complemento", top: 899, type: "text", left: 180, width: 102 },
+                            { label: "Data de Nascimento:", name: "nascimento", top: 1002, type: "date" },
+                            { label: "CPF ou CNPJ:", name: "documento", top: 1073, type: "text" },
+                            { label: "Chave pix:", name: "pix", top: 1144, type: "text" },
+                            { label: "Área de Atuação/Especialidade:", name: "especialidade", top: 1443, type: "text" },
+                            { label: "Descrição/Biografia:", name: "biografia", top: 1514, type: "text" },
+                            { label: "Comprovativo Formacional:", name: "formacao", top: 1585, type: "text" },
+                            { label: "Modalidade de Atendimento:", name: "modalidade", top: 1914, type: "text" },
+                            { label: "Raio de Atendimento:", name: "raio", top: 1985, type: "text" },
+                            { label: "Horário de funcionamento:", name: "horario", top: 2056, type: "text" }
+                        ]; %>
+                        <% providerFields.forEach((field) => { %>
+                            <label class="provider-field" style="--field-top: <%= field.top %>px; --field-left: <%= field.left || 47 %>px; --field-width: <%= field.width || 262 %>px">
+                                <span><%= field.label %></span>
+                                <input name="<%= field.name %>" type="<%= field.type %>" autocomplete="off">
+                            </label>
+                        <% }); %>
+
+                        <div class="provider-upload-label">Documento:</div>
+                        <label class="provider-upload provider-upload--front">
+                            <span>Frente:</span>
+                            <input type="file" name="documento-frente" aria-label="Enviar frente do documento">
+                            <i aria-hidden="true"></i>
+                        </label>
+                        <label class="provider-upload provider-upload--back">
+                            <span>Verso:</span>
+                            <input type="file" name="documento-verso" aria-label="Enviar verso do documento">
+                            <i aria-hidden="true"></i>
+                        </label>
+                        <label class="provider-photo-label">
+                            Insira sua foto de perfil:
+                            <input type="file" name="foto-perfil" accept="image/*" aria-label="Enviar foto de perfil">
+                        </label>
+                        <img class="provider-photo" src="/assets/autenticacao/foto-perfil-padrao.png" alt="Imagem de perfil padrão">
+                    </div>
+                <% } else { %>
+                    <div class="auth-basic-fields">
+                        <% if (etapa === "cadastro") { %>
+                            <label class="auth-input auth-input--email">
+                                <span class="visually-hidden">Email</span>
+                                <input type="email" name="email" placeholder="Email:" autocomplete="email" required>
+                            </label>
+                            <label class="auth-input auth-input--password">
+                                <span class="visually-hidden">Senha</span>
+                                <input type="password" name="senha" placeholder="Senha:" autocomplete="new-password" required>
+                            </label>
+                            <label class="auth-input auth-input--confirm">
+                                <span class="visually-hidden">Confirmar senha</span>
+                                <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" required>
+                            </label>
+                        <% } else { %>
+                            <label class="auth-input auth-input--email">
+                                <span class="visually-hidden">Email</span>
+                                <input type="email" name="email" placeholder="Email:" autocomplete="email" required>
+                            </label>
+                            <label class="auth-input auth-input--password">
+                                <span class="visually-hidden">Senha</span>
+                                <input type="password" name="senha" placeholder="Senha:" autocomplete="current-password" required>
+                            </label>
+                            <a class="auth-forgot" href="#mensagem">Esqueceu sua senha?</a>
+                        <% } %>
+                    </div>
+                <% } %>
+                <button class="auth-submit <%= etapa === 'cadastro' ? 'auth-submit--register' : '' %>" type="submit"><%= etapa === "cadastro" ? "CRIAR" : "ENTRAR" %></button>
+                <p class="auth-message" id="mensagem" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section class="auth-social" aria-label="Opções de acesso social">
+            <div class="auth-social__divider"><span>Ou entre com</span></div>
+            <div class="auth-social__icons" aria-label="Google, LinkedIn, Facebook e Apple">
+                <span><img src="/assets/autenticacao/google.png" alt="Google"></span>
+                <span><img src="/assets/autenticacao/linkedin.png" alt="LinkedIn"></span>
+                <span><img src="/assets/autenticacao/facebook.png" alt="Facebook"></span>
+                <span><img src="/assets/autenticacao/apple.png" alt="Apple"></span>
+            </div>
+            <% if (perfil === "cliente") { %>
+                <a class="auth-switch" href="/prestador/cadastro"><%= etapa === "cadastro" ? "Cadastrar" : "Entrar" %> como prestador de serviço</a>
+            <% } else { %>
+                <a class="auth-switch" href="/cliente/<%= etapa %>"><%= etapa === "cadastro" ? "Cadastrar" : "Entrar" %> como Cliente<%= etapa === "entrar" ? "." : "" %></a>
+            <% } %>
+        </section>
+
+        <footer class="auth-footer">
+            <div class="auth-footer__divider"></div>
+            <div class="auth-footer__legal">
+                <p class="auth-footer__security">
+                    <span class="auth-footer__lock" aria-hidden="true">
+                        <span class="auth-footer__lock-shackle"></span>
+                        <span class="auth-footer__lock-body"><img src="/assets/autenticacao/cadeado-rodape.svg" alt=""></span>
+                    </span>
+                    <span>Seus dados estão<br>seguros conosco.</span>
+                </p>
+                <nav class="auth-footer__links" aria-label="Links legais">
+                    <a href="#termos">Termos</a>
+                    <img src="/assets/autenticacao/ponto-rodape.svg" alt="" aria-hidden="true">
+                    <a href="#privacidade">Privacidade</a>
+                </nav>
+            </div>
+            <p class="auth-footer__copyright">© 2027 Steply</p>
+        </footer>
+    </main>
+</body>
+</html>
