@@ -6,7 +6,6 @@
     <meta name="theme-color" content="#ffffff">
     <title><%= etapa === "cadastro" ? "Cadastro" : "Entrar" %> — Steply (<%= tituloPerfil %>)</title>
     <link rel="stylesheet" href="/css/estilo.css">
-    <script defer src="/js/autenticacao.js"></script>
 </head>
 <body>
     <main class="auth-page auth-page--<%= perfil %>-<%= etapa %>">
@@ -25,61 +24,90 @@
                 <a class="auth-tabs__link <%= etapa === 'cadastro' ? 'is-active' : '' %>" href="<%= rotaCadastro %>" <%= etapa === "cadastro" ? 'aria-current="page"' : '' %>>Cadastre-se</a>
             </nav>
 
-            <form class="auth-form <%= perfil === 'prestador' && etapa === 'cadastro' ? 'auth-form--provider' : '' %>" data-auth-form>
+            <form class="auth-form <%= perfil === 'prestador' && etapa === 'cadastro' ? 'auth-form--provider' : '' %>" action="<%= etapa === 'cadastro' ? rotaCadastro : rotaEntrar %>" method="post">
                 <% if (perfil === "prestador" && etapa === "cadastro") { %>
                     <div class="provider-fields">
-                        <% const providerFields = [
-                            { label: "Nome completo:", name: "nome", top: 188, type: "text" },
-                            { label: "Nome comercial:", name: "nome-comercial", top: 261, type: "text" },
-                            { label: "Insira o e-mail:", name: "email", top: 364, type: "email" },
-                            { label: "Senha:", name: "senha", top: 441, type: "password" },
-                            { label: "Confirmar Senha:", name: "confirmar-senha", top: 512, type: "password" },
-                            { label: "Estado:", name: "estado", top: 615, type: "text" },
-                            { label: "Cidade:", name: "cidade", top: 686, type: "text" },
-                            { label: "CEP:", name: "cep", top: 757, type: "text" },
-                            { label: "Rua:", name: "rua", top: 828, type: "text" },
-                            { label: "Número:", name: "numero", top: 899, type: "text", left: 47, width: 102 },
-                            { label: "Complemento:", name: "complemento", top: 899, type: "text", left: 180, width: 102 },
-                            { label: "Data de Nascimento:", name: "nascimento", top: 1002, type: "date" },
-                            { label: "CPF ou CNPJ:", name: "documento", top: 1073, type: "text" },
-                            { label: "Chave pix:", name: "pix", top: 1144, type: "text" },
-                            { label: "Área de Atuação/Especialidade:", name: "especialidade", top: 1443, type: "text" },
-                            { label: "Descrição/Biografia:", name: "biografia", top: 1514, type: "text" },
-                            { label: "Comprovativo Formacional:", name: "formacao", top: 1585, type: "text" },
-                            { label: "Modalidade de Atendimento:", name: "modalidade", top: 1914, type: "text" },
-                            { label: "Raio de Atendimento:", name: "raio", top: 1985, type: "text" },
-                            { label: "Horário de funcionamento:", name: "horario", top: 2056, type: "text" }
+                        <% const providerSections = [
+                            { className: "provider-field-group--identity", fields: [
+                                { label: "Nome completo:", name: "nome", type: "text" },
+                                { label: "Nome comercial:", name: "nome-comercial", type: "text" }
+                            ] },
+                            { className: "provider-field-group--email", fields: [
+                                { label: "Insira o e-mail:", name: "email", type: "email" }
+                            ] },
+                            { className: "provider-field-group--passwords", fields: [
+                                { label: "Senha:", name: "senha", type: "password" },
+                                { label: "Confirmar Senha:", name: "confirmar-senha", type: "password" }
+                            ] },
+                            { className: "provider-field-group--address", fields: [
+                                { label: "Estado:", name: "estado", type: "text" },
+                                { label: "Cidade:", name: "cidade", type: "text" },
+                                { label: "CEP:", name: "cep", type: "text" },
+                                { label: "Rua:", name: "rua", type: "text" }
+                            ] },
+                            { className: "provider-field-group--split", fields: [
+                                { label: "Número:", name: "numero", type: "text" },
+                                { label: "Complemento:", name: "complemento", type: "text" }
+                            ] },
+                            { className: "provider-field-group--payment", fields: [
+                                { label: "Data de Nascimento:", name: "nascimento", type: "date" },
+                                { label: "CPF ou CNPJ:", name: "documento", type: "text" },
+                                { label: "Chave pix:", name: "pix", type: "text" }
+                            ] },
+                            { type: "uploads" },
+                            { className: "provider-field-group--services", fields: [
+                                { label: "Área de Atuação/Especialidade:", name: "especialidade", type: "text" },
+                                { label: "Descrição/Biografia:", name: "biografia", type: "text" },
+                                { label: "Comprovativo Formacional:", name: "formacao", type: "text" }
+                            ] },
+                            { type: "photo" },
+                            { className: "provider-field-group--availability", fields: [
+                                { label: "Modalidade de Atendimento:", name: "modalidade", type: "text" },
+                                { label: "Raio de Atendimento:", name: "raio", type: "text" },
+                                { label: "Horário de funcionamento:", name: "horario", type: "text" }
+                            ] }
                         ]; %>
-                        <% providerFields.forEach((field) => { %>
-                            <label class="provider-field" style="--field-top: <%= field.top %>px; --field-left: <%= field.left || 47 %>px; --field-width: <%= field.width || 262 %>px">
-                                <span><%= field.label %></span>
-                                <input name="<%= field.name %>" type="<%= field.type %>" autocomplete="off">
-                            </label>
+                        <% providerSections.forEach((section) => { %>
+                            <% if (section.type === "uploads") { %>
+                                <div class="provider-upload-label">Documento:</div>
+                                <div class="provider-uploads">
+                                    <label class="provider-upload provider-upload--front">
+                                        <span>Frente:</span>
+                                        <input type="file" name="documento-frente" aria-label="Enviar frente do documento">
+                                        <i aria-hidden="true"></i>
+                                    </label>
+                                    <label class="provider-upload provider-upload--back">
+                                        <span>Verso:</span>
+                                        <input type="file" name="documento-verso" aria-label="Enviar verso do documento">
+                                        <i aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                            <% } else if (section.type === "photo") { %>
+                                <div class="provider-photo-section">
+                                    <label class="provider-photo-label">
+                                        Insira sua foto de perfil:
+                                        <input type="file" name="foto-perfil" accept="image/*" aria-label="Enviar foto de perfil">
+                                    </label>
+                                    <img class="provider-photo" src="/assets/autenticacao/foto-perfil-padrao.png" alt="Imagem de perfil padrão">
+                                </div>
+                            <% } else { %>
+                                <div class="provider-field-group <%= section.className %>">
+                                    <% section.fields.forEach((field) => { %>
+                                        <label class="provider-field">
+                                            <span><%= field.label %></span>
+                                            <input name="<%= field.name %>" type="<%= field.type %>" autocomplete="off" value="<%= field.type === 'password' ? '' : (dados[field.name] || '') %>">
+                                        </label>
+                                    <% }); %>
+                                </div>
+                            <% } %>
                         <% }); %>
-
-                        <div class="provider-upload-label">Documento:</div>
-                        <label class="provider-upload provider-upload--front">
-                            <span>Frente:</span>
-                            <input type="file" name="documento-frente" aria-label="Enviar frente do documento">
-                            <i aria-hidden="true"></i>
-                        </label>
-                        <label class="provider-upload provider-upload--back">
-                            <span>Verso:</span>
-                            <input type="file" name="documento-verso" aria-label="Enviar verso do documento">
-                            <i aria-hidden="true"></i>
-                        </label>
-                        <label class="provider-photo-label">
-                            Insira sua foto de perfil:
-                            <input type="file" name="foto-perfil" accept="image/*" aria-label="Enviar foto de perfil">
-                        </label>
-                        <img class="provider-photo" src="/assets/autenticacao/foto-perfil-padrao.png" alt="Imagem de perfil padrão">
                     </div>
                 <% } else { %>
                     <div class="auth-basic-fields">
                         <% if (etapa === "cadastro") { %>
-                            <label class="auth-input auth-input--email">
+                            <label class="auth-input">
                                 <span class="visually-hidden">Email</span>
-                                <input type="email" name="email" placeholder="Email:" autocomplete="email" required>
+                                <input type="email" name="email" placeholder="Email:" autocomplete="email" value="<%= email %>" required>
                             </label>
                             <label class="auth-input auth-input--password">
                                 <span class="visually-hidden">Senha</span>
@@ -90,9 +118,9 @@
                                 <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" required>
                             </label>
                         <% } else { %>
-                            <label class="auth-input auth-input--email">
+                            <label class="auth-input">
                                 <span class="visually-hidden">Email</span>
-                                <input type="email" name="email" placeholder="Email:" autocomplete="email" required>
+                                <input type="email" name="email" placeholder="Email:" autocomplete="email" value="<%= email %>" required>
                             </label>
                             <label class="auth-input auth-input--password">
                                 <span class="visually-hidden">Senha</span>
@@ -102,8 +130,8 @@
                         <% } %>
                     </div>
                 <% } %>
-                <button class="auth-submit <%= etapa === 'cadastro' ? 'auth-submit--register' : '' %>" type="submit"><%= etapa === "cadastro" ? "CRIAR" : "ENTRAR" %></button>
-                <p class="auth-message" id="mensagem" role="status" aria-live="polite"></p>
+                <button class="auth-submit" type="submit"><%= etapa === "cadastro" ? "CRIAR" : "ENTRAR" %></button>
+                <p class="auth-message <%= erro ? 'auth-message--error' : '' %>" id="mensagem" role="<%= erro ? 'alert' : 'status' %>" aria-live="polite"><%= mensagem %></p>
             </form>
         </section>
 

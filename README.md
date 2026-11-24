@@ -13,8 +13,7 @@ A homepage fica disponível em `http://localhost:3000`.
 
 ## Estrutura
 
-- `app/routes/`: definição das rotas Express.
-- `app/controllers/`: controladores das páginas.
+- `app/routes/`: rotas Express, handlers das páginas e validações de formulário.
 - `app/views/`: templates EJS.
 - `app/public/`: CSS, JavaScript e recursos estáticos.
 
