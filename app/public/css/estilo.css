@@ -71,10 +71,6 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
     overflow: hidden;
 }
 
-@media (max-width: 359px) {
-    .homepage { zoom: calc(100vw / 360px); }
-}
-
 .homepage__glow {
     position: absolute;
     z-index: 0;
@@ -252,21 +248,20 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 }
 
 .hero__tagline--first { width: 268px; margin-left: 4px; }
-.hero__tagline--second { width: 307px; margin: -37px 0 0 26px; }
+.hero__tagline--second { width: 307px; margin: -20px 0 0 26px; }
 
 .hero__tagline img {
     position: absolute;
     z-index: -1;
-    top: -13px;
-    left: 8px;
+    top: 50%;
+    left: 50%;
     width: 249px;
     height: 48px;
     max-width: none;
+    transform: translate(-50%, -50%);
 }
 
 .hero__tagline--second img {
-    top: -10px;
-    left: -14px;
     width: 331px;
 }
 
