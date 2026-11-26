@@ -625,7 +625,7 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .auth-tabs__link.is-active { background: #b986efdb; }
 .auth-form, .auth-basic-fields { display: flex; flex-direction: column; }
 .auth-basic-fields { gap: 18px; }
-.auth-input { min-height: 40px; background: var(--field); }
+.auth-input { min-height: 40px; border-radius: 20px; background: var(--field); }
 
 .auth-input input {
     width: 100%;

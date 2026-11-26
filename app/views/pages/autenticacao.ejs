@@ -26,7 +26,7 @@
                 <a class="auth-tabs__link <%= etapa === 'cadastro' ? 'is-active' : '' %>" href="<%= rotaCadastro %>" <%= etapa === "cadastro" ? 'aria-current="page"' : '' %>>Cadastre-se</a>
             </nav>
 
-            <form class="auth-form <%= perfil === 'prestador' && etapa === 'cadastro' ? 'auth-form--provider' : '' %>" action="<%= etapa === 'cadastro' ? rotaCadastro : rotaEntrar %>" method="post">
+            <form class="auth-form <%= perfil === 'prestador' && etapa === 'cadastro' ? 'auth-form--provider' : '' %>" action="<%= etapa === 'cadastro' ? rotaCadastro : rotaEntrar %>" method="post" novalidate>
                 <% if (perfil === "prestador" && etapa === "cadastro") { %>
                     <div class="provider-fields">
                         <% const providerSections = [
@@ -433,6 +433,124 @@
                     this.value = numeros.length <= 11
                         ? numeros.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2")
                         : numeros.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d)/, "$1-$2");
+                });
+            }
+
+            function cpfValido(valor) {
+                const cpf = valor.replace(/\D/g, "");
+                if (!/^\d{11}$/.test(cpf) || /^([\d])\1{10}$/.test(cpf)) return false;
+
+                let soma = 0;
+                for (let i = 0; i < 9; i++) soma += Number(cpf[i]) * (10 - i);
+                let digito = (soma * 10) % 11;
+                if (digito === 10) digito = 0;
+                if (digito !== Number(cpf[9])) return false;
+
+                soma = 0;
+                for (let i = 0; i < 10; i++) soma += Number(cpf[i]) * (11 - i);
+                digito = (soma * 10) % 11;
+                if (digito === 10) digito = 0;
+                return digito === Number(cpf[10]);
+            }
+
+            function cnpjValido(valor) {
+                const cnpj = valor.replace(/\D/g, "");
+                if (!/^\d{14}$/.test(cnpj) || /^([\d])\1{13}$/.test(cnpj)) return false;
+                const pesos1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                const pesos2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                function calcular(base, pesos) {
+                    let soma = 0;
+                    base.forEach((numero, indice) => { soma += Number(numero) * pesos[indice]; });
+                    const resto = soma % 11;
+                    return resto < 2 ? 0 : 11 - resto;
+                }
+                return calcular(cnpj.slice(0, 12), pesos1) === Number(cnpj[12])
+                    && calcular(cnpj.slice(0, 13), pesos2) === Number(cnpj[13]);
+            }
+
+            function dataValida(valor) {
+                const match = valor.match(/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/);
+                if (!match) return false;
+                const dia = Number(match[1]);
+                const mes = Number(match[2]);
+                const ano = Number(match[3]);
+                const data = new Date(ano, mes - 1, dia);
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                return data.getFullYear() === ano && data.getMonth() === mes - 1
+                    && data.getDate() === dia && data <= hoje;
+            }
+
+            function validarCampo(input) {
+                if (!input) return "";
+                const nome = input.name;
+                const valor = input.value.trim();
+
+                if (input.required && !valor) {
+                    if (nome === "email") return "Informe seu e-mail.";
+                    if (nome === "senha") return "Informe sua senha.";
+                    if (nome === "confirmar-senha") return "Confirme sua senha.";
+                    return "Este campo é obrigatório.";
+                }
+
+                if (!valor) return "";
+
+                if (nome === "email") {
+                    const formularioCadastro = document.querySelector('input[name="confirmar-senha"]');
+                    if (!formularioCadastro && valor.toLowerCase() === "steply") return "";
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor) ? "" : "Informe um e-mail válido ou o usuário steply.";
+                }
+                if (nome === "nome" && valor.split(/\s+/).length < 2) return "Informe seu nome completo.";
+                if (nome === "cpf") return cpfValido(valor) ? "" : "Informe um CPF válido.";
+                if (nome === "documento") {
+                    const numeros = valor.replace(/\D/g, "");
+                    const valido = numeros.length === 11 ? cpfValido(numeros) : numeros.length === 14 ? cnpjValido(numeros) : false;
+                    return valido ? "" : "Informe um CPF ou CNPJ válido.";
+                }
+                if (nome === "nascimento") return dataValida(valor) ? "" : "Informe uma data de nascimento válida.";
+                if (nome === "cep") return /^\d{5}-?\d{3}$/.test(valor) ? "" : "Informe um CEP válido.";
+                if (nome === "telefone") {
+                    const numeros = valor.replace(/\D/g, "");
+                    return /^\d{10,11}$/.test(numeros) ? "" : "Informe um telefone válido com 10 ou 11 dígitos.";
+                }
+                if (nome === "senha" && valor.length < 8) {
+                    const formularioCadastro = document.querySelector('input[name="confirmar-senha"]');
+                    return !formularioCadastro && valor === "2027" ? "" : "A senha deve ter pelo menos 8 caracteres.";
+                }
+                if (nome === "confirmar-senha") {
+                    const senha = document.querySelector('input[name="senha"]');
+                    return senha && valor === senha.value ? "" : "As senhas não coincidem.";
+                }
+                if (nome === "numero" && !/^\d{1,10}$|^S\/N$/i.test(valor)) return "Informe um número válido.";
+                return "";
+            }
+
+            const formAuth = document.querySelector(".auth-form");
+            if (formAuth) {
+                const camposAuth = [...formAuth.querySelectorAll("input:not([type='file'])")];
+
+                camposAuth.forEach((input) => {
+                    input.addEventListener("blur", () => mostrarErro(input, validarCampo(input)));
+                    input.addEventListener("input", () => {
+                        if (input.getAttribute("aria-invalid") === "true") {
+                            mostrarErro(input, validarCampo(input));
+                        }
+                    });
+                });
+
+                formAuth.addEventListener("submit", (evento) => {
+                    let primeiroInvalido = null;
+                    camposAuth.forEach((input) => {
+                        const mensagem = validarCampo(input);
+                        mostrarErro(input, mensagem);
+                        if (mensagem && !primeiroInvalido) primeiroInvalido = input;
+                    });
+
+                    if (primeiroInvalido) {
+                        evento.preventDefault();
+                        primeiroInvalido.focus();
+                        primeiroInvalido.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
                 });
             }
         }());
