@@ -42,8 +42,9 @@
                                 { label: "Confirmar Senha:", name: "confirmar-senha", type: "password" }
                             ] },
                             { className: "provider-field-group--address", fields: [
-                                { label: "Estado:", name: "estado", type: "text" },
-                                { label: "Cidade:", name: "cidade", type: "text" },
+                                { label: "Estado:", name: "estado", type: "text", suggestions: true },
+                                { label: "Cidade:", name: "cidade", type: "text", suggestions: true },
+                                { label: "Bairro:", name: "bairro", type: "text", suggestions: true },
                                 { label: "CEP:", name: "cep", type: "text" },
                                 { label: "Rua:", name: "rua", type: "text" }
                             ] },
@@ -52,8 +53,9 @@
                                 { label: "Complemento:", name: "complemento", type: "text" }
                             ] },
                             { className: "provider-field-group--payment", fields: [
-                                { label: "Data de Nascimento:", name: "nascimento", type: "date" },
+                                { label: "Data de Nascimento:", name: "nascimento", type: "text" },
                                 { label: "CPF ou CNPJ:", name: "documento", type: "text" },
+                                { label: "Telefone:", name: "telefone", type: "tel" },
                                 { label: "Chave pix:", name: "pix", type: "text" }
                             ] },
                             { type: "uploads" },
@@ -95,10 +97,30 @@
                             <% } else { %>
                                 <div class="provider-field-group <%= section.className %>">
                                     <% section.fields.forEach((field) => { %>
-                                        <label class="provider-field">
-                                            <span><%= field.label %></span>
-                                            <input name="<%= field.name %>" type="<%= field.type %>" autocomplete="off" value="<%= field.type === 'password' ? '' : (dados[field.name] || '') %>">
-                                        </label>
+                                        <div class="provider-field">
+                                            <label>
+                                                <span><%= field.label %></span>
+                                                <input
+                                                    name="<%= field.name %>"
+                                                    type="<%= field.type %>"
+                                                    autocomplete="off"
+                                                    value="<%= field.type === 'password' ? '' : (dados[field.name] || '') %>"
+                                                    aria-invalid="<%= errosPorCampo?.[field.name] ? 'true' : 'false' %>"
+                                                    <%= ['nome','nome-comercial','email','senha','confirmar-senha','estado','cidade','bairro','cep','rua','numero','nascimento','documento'].includes(field.name) ? 'required' : '' %>
+                                                    <% if (field.name === 'nascimento') { %>placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(\\d{2})(\\d)/,'$1/$2').replace(/(\\d{2})(\\d)/,'$1/$2')"<% } %>
+                                                    <% if (field.name === 'documento') { %>placeholder="CPF ou CNPJ" maxlength="18" inputmode="numeric" oninput="let n=this.value.replace(/\\D/g,''); this.value=n.length<=11?n.replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d{1,2})$/,'$1-$2'):n.replace(/(\\d{2})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1/$2').replace(/(\\d{4})(\\d)/,'$1-$2')"<% } %>
+                                                    <% if (field.name === 'cep') { %>maxlength="9" inputmode="numeric" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{5})(\\d)/,'$1-$2')"<% } %>
+                                                    <% if (field.name === 'telefone') { %>maxlength="15" inputmode="tel" oninput="this.value=this.value.replace(/\\D/g,'').replace(/^(\\d{2})(\\d)/,'($1) $2').replace(/(\\d{5})(\\d{4})$/,'$1-$2')"<% } %>
+                                                    <% if (field.suggestions) { %>role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="provider-sugestoes-<%= field.name %>"<% } %>
+                                                >
+                                            </label>
+                                            <% if (errosPorCampo?.[field.name]) { %>
+                                                <small class="provider-field-error"><%= errosPorCampo[field.name] %></small>
+                                            <% } %>
+                                            <% if (field.suggestions) { %>
+                                                <ul class="auth-suggestions provider-suggestions" id="provider-sugestoes-<%= field.name %>" role="listbox" hidden></ul>
+                                            <% } %>
+                                        </div>
                                     <% }); %>
                                 </div>
                             <% } %>
@@ -107,18 +129,78 @@
                 <% } else { %>
                     <div class="auth-basic-fields">
                         <% if (etapa === "cadastro") { %>
-                            <label class="auth-input">
-                                <span class="visually-hidden">Email</span>
-                                <input type="email" name="email" placeholder="Email:" autocomplete="email" value="<%= email %>" required>
-                            </label>
-                            <label class="auth-input auth-input--password">
-                                <span class="visually-hidden">Senha</span>
-                                <input type="password" name="senha" placeholder="Senha:" autocomplete="new-password" required>
-                            </label>
-                            <label class="auth-input auth-input--confirm">
-                                <span class="visually-hidden">Confirmar senha</span>
-                                <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" required>
-                            </label>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Nome completo</span>
+                                    <input type="text" name="nome" placeholder="Nome completo:" autocomplete="name" minlength="3" maxlength="120" value="<%= dados.nome || '' %>" aria-invalid="<%= errosPorCampo?.nome ? 'true' : 'false' %>" required>
+                                </label>
+                                <% if (errosPorCampo?.nome) { %><small class="auth-field-error"><%= errosPorCampo.nome %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Email</span>
+                                    <input type="email" name="email" placeholder="Email:" autocomplete="email" value="<%= email %>" aria-invalid="<%= errosPorCampo?.email ? 'true' : 'false' %>" required>
+                                </label>
+                                <% if (errosPorCampo?.email) { %><small class="auth-field-error"><%= errosPorCampo.email %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">CPF</span>
+                                    <input type="text" name="cpf" placeholder="CPF:" autocomplete="off" inputmode="numeric" minlength="11" maxlength="14" value="<%= dados.cpf || '' %>" aria-invalid="<%= errosPorCampo?.cpf ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d{1,2})$/,'$1-$2')" required>
+                                </label>
+                                <% if (errosPorCampo?.cpf) { %><small class="auth-field-error"><%= errosPorCampo.cpf %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Data de nascimento</span>
+                                    <input type="text" name="nascimento" placeholder="Data de nascimento (dd/mm/aaaa):" aria-label="Data de nascimento" autocomplete="bday" inputmode="numeric" maxlength="10" value="<%= dados.nascimento || '' %>" aria-invalid="<%= errosPorCampo?.nascimento ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(\\d{2})(\\d)/,'$1/$2').replace(/(\\d{2})(\\d)/,'$1/$2')" required>
+                                </label>
+                                <% if (errosPorCampo?.nascimento) { %><small class="auth-field-error"><%= errosPorCampo.nascimento %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Bairro</span>
+                                    <input type="text" name="bairro" placeholder="Bairro:" autocomplete="address-level3" minlength="2" maxlength="100" value="<%= dados.bairro || '' %>" aria-invalid="<%= errosPorCampo?.bairro ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-bairros" required>
+                                </label>
+                                <ul class="auth-suggestions" id="sugestoes-bairros" role="listbox" hidden></ul>
+                                <% if (errosPorCampo?.bairro) { %><small class="auth-field-error"><%= errosPorCampo.bairro %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Cidade</span>
+                                    <input type="text" name="cidade" placeholder="Cidade:" autocomplete="address-level2" minlength="2" maxlength="100" value="<%= dados.cidade || '' %>" aria-invalid="<%= errosPorCampo?.cidade ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-cidades" required>
+                                </label>
+                                <ul class="auth-suggestions" id="sugestoes-cidades" role="listbox" hidden></ul>
+                                <% if (errosPorCampo?.cidade) { %><small class="auth-field-error"><%= errosPorCampo.cidade %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">CEP</span>
+                                    <input type="text" name="cep" placeholder="CEP:" autocomplete="postal-code" inputmode="numeric" minlength="8" maxlength="9" value="<%= dados.cep || '' %>" aria-invalid="<%= errosPorCampo?.cep ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{5})(\\d)/,'$1-$2')" required>
+                                </label>
+                                <% if (errosPorCampo?.cep) { %><small class="auth-field-error"><%= errosPorCampo.cep %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input">
+                                    <span class="visually-hidden">Telefone</span>
+                                    <input type="tel" name="telefone" placeholder="Telefone (opcional):" autocomplete="tel" inputmode="tel" maxlength="15" value="<%= dados.telefone || '' %>" aria-invalid="<%= errosPorCampo?.telefone ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/^(\\d{2})(\\d)/,'($1) $2').replace(/(\\d{5})(\\d{4})$/,'$1-$2')">
+                                </label>
+                                <% if (errosPorCampo?.telefone) { %><small class="auth-field-error"><%= errosPorCampo.telefone %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input auth-input--password">
+                                    <span class="visually-hidden">Senha</span>
+                                    <input type="password" name="senha" placeholder="Senha:" autocomplete="new-password" minlength="8" aria-invalid="<%= errosPorCampo?.senha ? 'true' : 'false' %>" required>
+                                </label>
+                                <% if (errosPorCampo?.senha) { %><small class="auth-field-error"><%= errosPorCampo.senha %></small><% } %>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-input auth-input--confirm">
+                                    <span class="visually-hidden">Confirmar senha</span>
+                                    <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" minlength="8" aria-invalid="<%= errosPorCampo?.['confirmar-senha'] ? 'true' : 'false' %>" required>
+                                </label>
+                                <% if (errosPorCampo?.['confirmar-senha']) { %><small class="auth-field-error"><%= errosPorCampo['confirmar-senha'] %></small><% } %>
+                            </div>
                         <% } else { %>
                             <label class="auth-input">
                                 <span class="visually-hidden">Email</span>
@@ -171,5 +253,189 @@
             <p class="auth-footer__copyright">© 2027 Steply</p>
         </footer>
     </main>
+
+    <script>
+        (function () {
+            const cpfInput = document.querySelector('input[name="cpf"]');
+            const telefoneInput = document.querySelector('input[name="telefone"]');
+            const estadoInput = document.querySelector('input[name="estado"]');
+            const bairroInput = document.querySelector('input[name="bairro"]');
+            const cidadeInput = document.querySelector('input[name="cidade"]');
+            const documentoInput = document.querySelector('input[name="documento"]');
+            const nascimentoInput = document.querySelector('input[name="nascimento"]');
+            const cepInput = document.querySelector('input[name="cep"]');
+            const sugestoesBairros = document.getElementById('sugestoes-bairros');
+            const sugestoesCidades = document.getElementById('sugestoes-cidades');
+            const bairros = ["Centro", "Jardim América", "Jardim Bela Vista", "Vila Nova", "Zona Rural", "Boa Vista", "Santa Luzia", "São José", "São Lucas", "Nova Esperança", "Cidade Jardim", "Parque das Flores", "Jardim Paulista", "Bela Vista", "Liberdade"];
+            const cidades = ["São Paulo", "Campinas", "Ribeirão Preto", "Sorocaba", "Santos", "Bauru", "Guarulhos", "São Bernardo do Campo", "Santo André", "Osasco", "Piracicaba", "Jundiaí", "Mogi das Cruzes", "Franca", "São José dos Campos", "Americana"];
+            const estados = ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins"];
+
+            function mostrarErro(input, mensagem) {
+                if (!input) return;
+                input.setAttribute("aria-invalid", mensagem ? "true" : "false");
+                const campo = input.closest(".auth-field, .provider-field");
+                if (!campo) return;
+
+                let feedback = campo.querySelector(".auth-field-error--browser, .provider-field-error--browser");
+                if (!feedback) {
+                    feedback = document.createElement("small");
+                    feedback.className = campo.classList.contains("provider-field")
+                        ? "provider-field-error provider-field-error--browser"
+                        : "auth-field-error auth-field-error--browser";
+                    campo.appendChild(feedback);
+                }
+                feedback.textContent = mensagem || "";
+                feedback.hidden = !mensagem;
+            }
+
+            if (cpfInput) {
+                cpfInput.addEventListener("blur", function () {
+                    const cpf = this.value.replace(/\D/g, "");
+                    let valido = /^\d{11}$/.test(cpf) && !/^([\d])\1{10}$/.test(cpf);
+
+                    if (valido) {
+                        let soma = 0;
+                        for (let i = 0; i < 9; i++) soma += Number(cpf[i]) * (10 - i);
+                        let digito = (soma * 10) % 11;
+                        if (digito === 10) digito = 0;
+                        valido = digito === Number(cpf[9]);
+
+                        if (valido) {
+                            soma = 0;
+                            for (let i = 0; i < 10; i++) soma += Number(cpf[i]) * (11 - i);
+                            digito = (soma * 10) % 11;
+                            if (digito === 10) digito = 0;
+                            valido = digito === Number(cpf[10]);
+                        }
+                    }
+
+                    mostrarErro(this, cpf && !valido ? "Informe um CPF válido." : "");
+                });
+            }
+
+            if (telefoneInput) {
+                telefoneInput.addEventListener("blur", function () {
+                    const telefone = this.value.replace(/\D/g, "");
+                    mostrarErro(this, telefone && !/^\d{10,11}$/.test(telefone) ? "Informe um telefone válido com 10 ou 11 dígitos." : "");
+                });
+            }
+
+            function textoNormalizado(valor) {
+                return valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            }
+
+            function configurarSugestoes(input, lista, opcoes) {
+                if (!input || !lista) return;
+
+                let indiceAtivo = -1;
+
+                function fecharLista() {
+                    lista.hidden = true;
+                    indiceAtivo = -1;
+                    input.setAttribute("aria-expanded", "false");
+                    input.removeAttribute("aria-activedescendant");
+                }
+
+                function selecionar(valor) {
+                    input.value = valor;
+                    fecharLista();
+                    input.focus();
+                }
+
+                function atualizarLista() {
+                    const texto = textoNormalizado(input.value.trim());
+                    if (!texto) {
+                        fecharLista();
+                        return;
+                    }
+
+                    const resultados = opcoes
+                        .filter((opcao) => textoNormalizado(opcao).includes(texto))
+                        .slice(0, 6);
+
+                    lista.replaceChildren();
+                    indiceAtivo = -1;
+
+                    resultados.forEach((resultado, indice) => {
+                        const item = document.createElement("li");
+                        item.id = `${lista.id}-opcao-${indice}`;
+                        item.className = "auth-suggestions__item";
+                        item.setAttribute("role", "option");
+                        item.textContent = resultado;
+                        item.addEventListener("mousedown", (evento) => {
+                            evento.preventDefault();
+                            selecionar(resultado);
+                        });
+                        lista.appendChild(item);
+                    });
+
+                    lista.hidden = resultados.length === 0;
+                    input.setAttribute("aria-expanded", resultados.length ? "true" : "false");
+                }
+
+                input.addEventListener("input", atualizarLista);
+                input.addEventListener("focus", atualizarLista);
+                input.addEventListener("keydown", (evento) => {
+                    const itens = [...lista.querySelectorAll(".auth-suggestions__item")];
+                    if (!itens.length) return;
+
+                    if (evento.key === "ArrowDown" || evento.key === "ArrowUp") {
+                        evento.preventDefault();
+                        indiceAtivo = evento.key === "ArrowDown"
+                            ? (indiceAtivo + 1) % itens.length
+                            : (indiceAtivo - 1 + itens.length) % itens.length;
+                        itens.forEach((item, indice) => item.classList.toggle("is-active", indice === indiceAtivo));
+                        input.setAttribute("aria-activedescendant", itens[indiceAtivo].id);
+                        itens[indiceAtivo].scrollIntoView({ block: "nearest" });
+                    }
+
+                    if (evento.key === "Enter" && indiceAtivo >= 0) {
+                        evento.preventDefault();
+                        selecionar(itens[indiceAtivo].textContent);
+                    }
+
+                    if (evento.key === "Escape") fecharLista();
+                });
+
+                input.addEventListener("blur", () => setTimeout(fecharLista, 120));
+            }
+
+            configurarSugestoes(bairroInput, sugestoesBairros, bairros);
+            configurarSugestoes(cidadeInput, sugestoesCidades, cidades);
+
+            document.querySelectorAll('input[name="estado"], input[name="bairro"], input[name="cidade"]').forEach((input) => {
+                const lista = document.getElementById(`provider-sugestoes-${input.name}`);
+                const opcoes = input.name === "estado" ? estados : input.name === "bairro" ? bairros : cidades;
+                configurarSugestoes(input, lista, opcoes);
+            });
+
+            if (nascimentoInput) {
+                nascimentoInput.addEventListener("input", function () {
+                    const numeros = this.value.replace(/\D/g, "").slice(0, 8);
+                    this.value = numeros.length > 4
+                        ? `${numeros.slice(0, 2)}/${numeros.slice(2, 4)}/${numeros.slice(4)}`
+                        : numeros.length > 2
+                            ? `${numeros.slice(0, 2)}/${numeros.slice(2)}`
+                            : numeros;
+                });
+            }
+
+            if (cepInput) {
+                cepInput.addEventListener("input", function () {
+                    const numeros = this.value.replace(/\D/g, "").slice(0, 8);
+                    this.value = numeros.length > 5 ? `${numeros.slice(0, 5)}-${numeros.slice(5)}` : numeros;
+                });
+            }
+
+            if (documentoInput) {
+                documentoInput.addEventListener("input", function () {
+                    const numeros = this.value.replace(/\D/g, "").slice(0, 14);
+                    this.value = numeros.length <= 11
+                        ? numeros.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+                        : numeros.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d)/, "$1-$2");
+                });
+            }
+        }());
+    </script>
 </body>
 </html>

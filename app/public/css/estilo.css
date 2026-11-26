@@ -639,6 +639,9 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 }
 
 .auth-input input::placeholder { color: #0009; }
+.auth-field { position: relative; display: flex; flex-direction: column; }
+.auth-input:has(input[aria-invalid="true"]) { outline: 2px solid #d92d20; border-radius: 20px; }
+.auth-field-error { margin: 5px 8px 0; color: #b42318; font-size: 12px; line-height: 1.3; }
 .auth-forgot { align-self: flex-start; margin: -10px 0 0 10px; color: #ff383c; font-size: 13px; text-decoration: none; }
 .auth-submit { width: min(100%, 220px); margin: 24px auto 0; }
 .auth-message { margin: 10px 0 0; color: var(--deep-purple); font-size: 14px; line-height: 1.4; text-align: center; }
@@ -691,6 +694,8 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
     font-weight: 600;
 }
 
+.provider-field > label { display: flex; flex-direction: column; gap: 5px; }
+
 .provider-field input {
     width: 100%;
     min-height: 40px;
@@ -702,6 +707,10 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
     color: #24202c;
     font-size: 16px;
 }
+
+.provider-field input[aria-invalid="true"] { outline: 2px solid #d92d20; }
+.provider-field-error { color: #b42318; font-size: 12px; line-height: 1.3; }
+.provider-suggestions { position: relative; top: 6px; }
 
 .provider-upload-label { color: #393340; font-size: 14px; font-weight: 600; }
 .provider-uploads { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -747,3 +756,31 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .provider-photo-label { position: relative; width: fit-content; color: #393340; font-size: 14px; font-weight: 600; }
 .provider-photo { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 .auth-form--provider .auth-submit { margin-top: 22px; }
+
+.auth-suggestions {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    max-height: 190px;
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+    border: 1px solid #e5daf8;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 10px 24px #4a2d7a24;
+    list-style: none;
+}
+.auth-suggestions[hidden] { display: none; }
+.auth-suggestions__item {
+    min-height: 38px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    color: #393340;
+    font-size: 14px;
+    cursor: pointer;
+}
+.auth-suggestions__item:hover,
+.auth-suggestions__item.is-active { background: #f1e8fc; color: #5d3a8c; }
