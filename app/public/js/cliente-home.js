@@ -1,5 +1,14 @@
 const carousel = document.querySelector(".service-carousel");
 const servicesSheet = document.querySelector(".services-sheet");
+const emergencySheet = document.querySelector(".emergency-sheet");
+
+const openSheet = (sheet) => {
+    if (sheet && !sheet.open) sheet.showModal();
+};
+
+const closeSheet = (sheet) => {
+    if (sheet?.open) sheet.close();
+};
 
 if (carousel) {
     const windowElement = carousel.querySelector(".service-carousel__window");
@@ -18,7 +27,11 @@ if (carousel) {
 
 if (servicesSheet) {
     document.querySelectorAll("[data-open-services]").forEach((button) => {
-        button.addEventListener("click", () => servicesSheet.showModal());
+        button.addEventListener("click", () => {
+            const activeSheet = button.closest("dialog");
+            if (activeSheet?.open) activeSheet.close();
+            servicesSheet.showModal();
+        });
     });
 
     servicesSheet.querySelector("[data-close-services]").addEventListener("click", () => {
@@ -36,3 +49,17 @@ if (servicesSheet) {
         }
     });
 }
+
+if (emergencySheet) {
+    document.querySelector("[data-open-emergency]")?.addEventListener("click", () => openSheet(emergencySheet));
+}
+
+document.querySelectorAll("[data-close-sheet]").forEach((button) => {
+    button.addEventListener("click", () => closeSheet(button.closest("dialog")));
+});
+
+[emergencySheet].forEach((sheet) => {
+    sheet?.addEventListener("click", (event) => {
+        if (event.target === sheet) closeSheet(sheet);
+    });
+});
