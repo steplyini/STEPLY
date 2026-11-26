@@ -1,0 +1,38 @@
+const carousel = document.querySelector(".service-carousel");
+const servicesSheet = document.querySelector(".services-sheet");
+
+if (carousel) {
+    const windowElement = carousel.querySelector(".service-carousel__window");
+    const firstCard = carousel.querySelector(".service-card");
+    const cardGap = Number.parseFloat(getComputedStyle(windowElement).columnGap) || 14;
+    const getStep = () => firstCard.getBoundingClientRect().width + cardGap;
+
+    carousel.querySelector("[data-carousel-previous]").addEventListener("click", () => {
+        windowElement.scrollBy({ left: -getStep(), behavior: "smooth" });
+    });
+
+    carousel.querySelector("[data-carousel-next]").addEventListener("click", () => {
+        windowElement.scrollBy({ left: getStep(), behavior: "smooth" });
+    });
+}
+
+if (servicesSheet) {
+    document.querySelectorAll("[data-open-services]").forEach((button) => {
+        button.addEventListener("click", () => servicesSheet.showModal());
+    });
+
+    servicesSheet.querySelector("[data-close-services]").addEventListener("click", () => {
+        servicesSheet.close();
+    });
+
+    servicesSheet.addEventListener("click", (event) => {
+        if (event.target === servicesSheet) servicesSheet.close();
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && servicesSheet.open) {
+            event.preventDefault();
+            servicesSheet.close();
+        }
+    });
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Explorar agora — Steply</title>
+    <link rel="stylesheet" href="/css/cliente-home.css">
+    <link rel="stylesheet" href="/css/cliente-pages.css">
+</head>
+<body>
+    <main class="client-home client-page client-page--explore">
+        <header class="client-header">
+            <a class="client-header__brand" href="/cliente/inicio" aria-label="Steply — início">
+                <img src="/assets/logo.png" alt="Steply">
+            </a>
+            <p class="client-header__location"><span aria-hidden="true">⌖</span> Sua região</p>
+            <img class="client-header__profile" src="/assets/cliente/perfil.png" alt="Perfil do cliente">
+        </header>
+
+        <section class="client-page__intro" aria-labelledby="explore-title">
+            <a class="client-page__back" href="/cliente/inicio" aria-label="Voltar para o início">‹</a>
+            <h1 id="explore-title">Pronto para encontrar o que precisa?</h1>
+        </section>
+
+        <form class="client-search client-page__search" action="/" method="get" role="search">
+            <label class="visually-hidden" for="explore-query">Buscar local ou serviço</label>
+            <img src="/assets/search.png" alt="" aria-hidden="true">
+            <input id="explore-query" type="search" name="pesquisa" placeholder="Buscar local...">
+        </form>
+
+        <figure class="explore-map">
+            <img src="/assets/cliente/mapa-explorar.svg" alt="Mapa com serviços e negócios próximos de você">
+        </figure>
+
+        <nav class="client-bottom-nav" aria-label="Navegação principal">
+            <a href="/cliente/inicio"><span aria-hidden="true">⌂</span>Home</a>
+            <a class="client-bottom-nav__active" href="/cliente/explorar" aria-current="page"><span aria-hidden="true">⌕</span>Buscar</a>
+        </nav>
+    </main>
+</body>
+</html>

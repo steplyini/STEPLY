@@ -1,0 +1,137 @@
+.client-page {
+    display: flex;
+    width: min(100%, 480px);
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 8px 16px 0;
+}
+
+.client-page .client-header { margin-bottom: 20px; }
+
+.client-page__intro {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: start;
+    gap: 8px;
+}
+
+.client-page__back {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    color: var(--client-purple);
+    font-size: 25px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.client-page__intro h1 {
+    margin: 0;
+    color: var(--client-purple);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.client-page__search { margin-top: 12px; }
+
+.explore-map {
+    width: 100%;
+    aspect-ratio: 1.12;
+    margin: 14px 0 20px;
+    overflow: hidden;
+    border: 6px solid var(--client-purple);
+    border-radius: 8px;
+    background: #f4f4f1;
+}
+
+.explore-map img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-page .client-bottom-nav { margin-top: auto; }
+
+.emergency-panel {
+    display: grid;
+    gap: 12px;
+    padding: 14px 10px;
+    border-radius: 27px;
+    background: #b6a4f5;
+}
+
+.emergency-card {
+    display: grid;
+    min-height: 88px;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 9px;
+    padding: 6px;
+    border-radius: 13px;
+    background: #f8f6fc;
+    box-shadow: 0 2px 4px #0002;
+}
+
+.emergency-card__image {
+    width: 76px;
+    height: 76px;
+    border-radius: 9px;
+    object-fit: cover;
+}
+
+.emergency-card__details {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 1fr auto;
+    align-content: center;
+    align-items: center;
+    gap: 2px 6px;
+    color: var(--client-purple);
+    font-size: 9px;
+}
+
+.emergency-card h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.emergency-card p {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: #484848;
+    font-size: 8px;
+}
+
+.emergency-card__rating { color: #6845d3; }
+.emergency-card__rating span { color: #ffba00; }
+.emergency-card__distance { color: #484848; }
+
+.emergency-card__action {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-width: 72px;
+    padding: 4px 12px;
+    border: 0;
+    border-radius: 15px;
+    background: var(--client-purple);
+    color: #fff;
+    font: inherit;
+    font-size: 8px;
+    cursor: pointer;
+}
+
+@media (min-width: 700px) {
+    .client-page { width: min(100%, 480px); padding: 12px 20px 0; }
+    .client-page .client-header { margin-bottom: 28px; }
+    .explore-map { aspect-ratio: 1.2; margin-top: 18px; }
+    .emergency-panel { gap: 14px; padding: 18px 14px; }
+    .emergency-card { min-height: 104px; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; padding: 8px; }
+    .emergency-card__image { width: 88px; height: 88px; }
+    .emergency-card__details { font-size: 11px; }
+    .emergency-card h2 { font-size: 14px; }
+    .emergency-card p { font-size: 10px; }
+}

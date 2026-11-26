@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Início — Steply</title>
+    <link rel="stylesheet" href="/css/cliente-home.css">
+    <script defer src="/js/cliente-home.js"></script>
+</head>
+<body>
+    <main class="client-home">
+        <header class="client-header">
+            <a class="client-header__brand" href="/cliente/inicio" aria-label="Steply — início">
+                <img src="/assets/logo.png" alt="Steply">
+            </a>
+            <p class="client-header__location"><span aria-hidden="true">⌖</span> Sua região</p>
+            <img class="client-header__profile" src="/assets/cliente/perfil.png" alt="Perfil de <%= nomeCliente %>">
+        </header>
+
+        <section class="client-intro" aria-labelledby="client-greeting">
+            <h1 id="client-greeting">Olá, <%= nomeCliente %></h1>
+            <p>O que você precisa hoje?</p>
+            <form class="client-search" action="/" method="get" role="search">
+                <label class="visually-hidden" for="client-query">Buscar serviço ou produto</label>
+                <img src="/assets/search.png" alt="" aria-hidden="true">
+                <input id="client-query" type="search" name="pesquisa" placeholder="Buscar serviços ou produtos">
+                <button type="submit" aria-label="Buscar">⌕</button>
+            </form>
+            <nav class="quick-categories" aria-label="Categorias populares">
+                <a href="#servicos"><img src="/assets/cliente/icone-beleza.png" alt="" aria-hidden="true"><span>Beleza</span></a>
+                <a href="#servicos"><img src="/assets/cliente/icone-alimentacao.png" alt="" aria-hidden="true"><span>Alimentação</span></a>
+                <button type="button" data-open-services><span aria-hidden="true">•••</span><span>Mais</span></button>
+            </nav>
+            <div class="home-promos">
+                <a class="home-promo home-promo--discover" href="/cliente/explorar">
+                    <strong>Encontre o serviço ideal para você</strong>
+                    <span>Profissionais e comércios locais pertinho de você.</span>
+                    <span class="home-promo__action">Explorar agora</span>
+                </a>
+                <a class="home-promo home-promo--urgent" href="/cliente/emergencia">
+                    <span>Está precisando de atendimento imediato?</span>
+                    <strong>EMERGÊNCIA</strong>
+                </a>
+            </div>
+        </section>
+
+        <section class="client-section popular-services" id="servicos" aria-labelledby="popular-title">
+            <div class="client-section__heading">
+                <h2 id="popular-title">Serviços em alta</h2>
+                <button class="text-action" type="button" data-open-services>Ver todos</button>
+            </div>
+            <div class="service-carousel">
+                <button class="carousel-control carousel-control--previous" type="button" aria-label="Ver serviços anteriores" data-carousel-previous>‹</button>
+                <div class="service-carousel__window" aria-label="Serviços em destaque" tabindex="0">
+                    <div class="service-carousel__track">
+                        <% const destaques = [
+                            { nome: "Manicure e Pedicure", negocio: "Studio Nails", avaliacao: "4,9 (142)", distancia: "3,8 km", categoria: "Beleza", imagem: "manicure" },
+                            { nome: "Hambúrguer Artesanal", negocio: "Best Burger", avaliacao: "4,3 (72)", distancia: "4,3 km", categoria: "Comida", imagem: "hamburguer" },
+                            { nome: "Mecânico", negocio: "Theo Peças", avaliacao: "4,0 (34)", distancia: "8,3 km", categoria: "Mecânica", imagem: "mecanico" },
+                            { nome: "Eletricista", negocio: "Oliver Fios", avaliacao: "4,8 (301)", distancia: "5,1 km", categoria: "Elétrica", imagem: "eletricista" },
+                            { nome: "Massagista", negocio: "Gecor", avaliacao: "4,9 (194)", distancia: "7,8 km", categoria: "Estética", imagem: "massagista" },
+                            { nome: "Barbeiro", negocio: "Ale Cortes", avaliacao: "4,5 (98)", distancia: "2,9 km", categoria: "Beleza", imagem: "barbeiro" }
+                        ]; %>
+                        <% destaques.forEach((servico) => { %>
+                            <article class="service-card">
+                                <img class="service-card__image" src="/assets/cliente/servico-<%= servico.imagem %>.jpg" alt="<%= servico.nome %>">
+                                <div class="service-card__details">
+                                    <h3><%= servico.nome %></h3>
+                                    <p class="service-card__business"><%= servico.negocio %></p>
+                                    <p class="service-card__meta"><span aria-hidden="true">★</span> <%= servico.avaliacao %></p>
+                                    <p class="service-card__meta"><span aria-hidden="true">⌖</span> <%= servico.distancia %></p>
+                                    <span class="service-card__tag"><%= servico.categoria %></span>
+                                </div>
+                            </article>
+                        <% }); %>
+                    </div>
+                </div>
+                <button class="carousel-control carousel-control--next" type="button" aria-label="Ver próximos serviços" data-carousel-next>›</button>
+            </div>
+        </section>
+
+        <section class="client-section category-section" aria-labelledby="category-title">
+            <div class="category-panel">
+                <div class="client-section__heading">
+                    <h2 id="category-title">Categorias em alta</h2>
+                    <button class="text-action" type="button" data-open-services>Ver todos</button>
+                </div>
+                <p class="category-panel__description">Explore as principais categorias e encontre o que você precisa.</p>
+                <div class="category-highlights">
+                    <button type="button" data-open-services>
+                        <span class="category-highlight__icon" aria-hidden="true">✦</span>
+                        <strong>Beleza</strong>
+                        <small>+1,3 mil serviços</small>
+                    </button>
+                    <button type="button" data-open-services>
+                        <span class="category-highlight__icon" aria-hidden="true">⌂</span>
+                        <strong>Academia</strong>
+                        <small>+943 serviços</small>
+                    </button>
+                    <button type="button" data-open-services>
+                        <span class="category-highlight__icon" aria-hidden="true">⚙</span>
+                        <strong>Mecânica</strong>
+                        <small>+538 serviços</small>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="client-section benefits-section" aria-labelledby="benefits-title">
+            <h2 id="benefits-title">Por que usar o Steply?</h2>
+            <div class="benefit-list">
+                <article class="benefit-item"><span aria-hidden="true">✦</span><div><h3>Tudo em um só lugar</h3><p>Serviços e produtos perto de você.</p></div></article>
+                <article class="benefit-item"><span aria-hidden="true">★</span><div><h3>Avaliações reais</h3><p>Veja o que outros clientes dizem.</p></div></article>
+                <article class="benefit-item"><span aria-hidden="true">◷</span><div><h3>Mais praticidade</h3><p>Economize tempo e encontre o que precisa.</p></div></article>
+                <article class="benefit-item"><span aria-hidden="true">♥</span><div><h3>Compre com segurança</h3><p>Ambiente confiável e verificado.</p></div></article>
+            </div>
+        </section>
+
+        <section class="client-section testimonials" aria-labelledby="testimonials-title">
+            <h2 id="testimonials-title">Depoimentos da nossa comunidade</h2>
+            <div class="testimonial-list">
+                <article class="testimonial-card"><img class="testimonial-card__avatar" src="/assets/cliente/avaliacao-juliana.png" alt=""><div><p>Amei a praticidade! Encontrei um salão de beleza perto de mim e fui muito bem atendida.</p><strong>Juliana Silva</strong><span class="testimonial-card__stars" aria-label="5 de 5 estrelas">★★★★★</span></div></article>
+                <article class="testimonial-card"><img class="testimonial-card__avatar" src="/assets/cliente/avaliacao-ana.png" alt=""><div><p>O Steply me ajudou a encontrar a melhor pizzaria da minha região! Simples e rápido.</p><strong>Ana Souza</strong><span class="testimonial-card__stars" aria-label="5 de 5 estrelas">★★★★★</span></div></article>
+                <article class="testimonial-card"><img class="testimonial-card__avatar" src="/assets/cliente/avaliacao-carlos.png" alt=""><div><p>Consegui o personal trainer ideal perto de casa. Atendimento incrível e super prático!</p><strong>Carlos Lima</strong><span class="testimonial-card__stars" aria-label="5 de 5 estrelas">★★★★★</span></div></article>
+                <article class="testimonial-card"><img class="testimonial-card__avatar" src="/assets/cliente/avaliacao-rafael.png" alt=""><div><p>Descobri uma confeitaria incrível pelo app. O Steply salvou o aniversário da minha filha!</p><strong>Rafael Oliveira</strong><span class="testimonial-card__stars" aria-label="5 de 5 estrelas">★★★★★</span></div></article>
+            </div>
+        </section>
+
+        <nav class="client-bottom-nav" aria-label="Navegação principal">
+            <a class="client-bottom-nav__active" href="/cliente/inicio" aria-current="page"><span aria-hidden="true">⌂</span>Home</a>
+            <a href="/cliente/explorar"><span aria-hidden="true">⌕</span>Buscar</a>
+        </nav>
+
+        <footer class="client-footer">
+            <h2>Pronto pra encontrar o que precisa?</h2>
+            <p>Junte-se ao Steply</p>
+            <img class="client-footer__social" src="/assets/cliente/redes-sociais.png" alt="Redes sociais do Steply">
+            <div class="client-footer__legal">
+                <p>Seus dados estão seguros conosco.</p>
+                <nav aria-label="Links legais"><a href="#termos">Termos</a><span aria-hidden="true">·</span><a href="#privacidade">Privacidade</a></nav>
+            </div>
+            <p class="client-footer__copyright">© 2027 Steply</p>
+        </footer>
+    </main>
+
+    <dialog class="services-sheet" aria-labelledby="services-sheet-title">
+        <div class="services-sheet__handle" aria-hidden="true"></div>
+        <header class="services-sheet__header">
+            <div>
+                <p>Explore a região</p>
+                <h2 id="services-sheet-title">Serviços em alta</h2>
+            </div>
+            <button class="services-sheet__close" type="button" aria-label="Fechar categorias" data-close-services>×</button>
+        </header>
+        <div class="services-sheet__content">
+            <div class="services-sheet__grid">
+                <% const todosServicos = [
+                    { nome: "Manicure e Pedicure", negocio: "Studio Nails", avaliacao: "4,9 (142)", distancia: "3,8 km", categoria: "Beleza", imagem: "manicure" },
+                    { nome: "Hambúrguer Artesanal", negocio: "Best Burger", avaliacao: "4,3 (72)", distancia: "4,3 km", categoria: "Comida", imagem: "hamburguer" },
+                    { nome: "Eletricista", negocio: "Oliver Fios", avaliacao: "4,8 (301)", distancia: "5,1 km", categoria: "Elétrica", imagem: "eletricista" },
+                    { nome: "Massagista", negocio: "Gecor", avaliacao: "4,9 (194)", distancia: "7,8 km", categoria: "Estética", imagem: "massagista" },
+                    { nome: "Doces do Jo", negocio: "João Doces", avaliacao: "4,8 (82)", distancia: "4,7 km", categoria: "Comida", imagem: "doces" },
+                    { nome: "Banho e Tosa", negocio: "Barueri Pets", avaliacao: "4,1 (139)", distancia: "8,3 km", categoria: "PetShop", imagem: "petshop" },
+                    { nome: "Mecânico", negocio: "Theo Peças", avaliacao: "4,0 (34)", distancia: "8,3 km", categoria: "Mecânica", imagem: "mecanico" },
+                    { nome: "Barbeiro", negocio: "Ale Cortes", avaliacao: "4,5 (98)", distancia: "2,9 km", categoria: "Beleza", imagem: "barbeiro" },
+                    { nome: "Jeny Costuras", negocio: "Studio Jeny", avaliacao: "4,6 (49)", distancia: "3,8 km", categoria: "Costura", imagem: "costura" }
+                ]; %>
+                <% todosServicos.forEach((servico) => { %>
+                    <article class="sheet-service-card">
+                        <img src="/assets/cliente/servico-<%= servico.imagem %>.jpg" alt="<%= servico.nome %>">
+                        <div class="sheet-service-card__details">
+                            <h3><%= servico.nome %></h3>
+                            <p><%= servico.negocio %></p>
+                            <span>★ <%= servico.avaliacao %></span>
+                            <span>⌖ <%= servico.distancia %></span>
+                            <small><%= servico.categoria %></small>
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+        </div>
+    </dialog>
+</body>
+</html>

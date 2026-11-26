@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
+const DEMO_CLIENT_LOGIN = "steply";
+const DEMO_CLIENT_PASSWORD = "2027";
 
 function renderAuth(req, res, perfil, etapa) {
     res.render("pages/autenticacao", {
@@ -19,6 +21,28 @@ function renderAuth(req, res, perfil, etapa) {
 function processAuth(req, res, perfil, etapa) {
     const dados = req.body || {};
     const erros = validationResult(req).array();
+
+    if (!erros.length && etapa === "entrar" && perfil === "cliente") {
+        const identificacao = typeof dados.email === "string" ? dados.email.trim().toLowerCase() : "";
+        const senha = typeof dados.senha === "string" ? dados.senha : "";
+
+        if (identificacao === DEMO_CLIENT_LOGIN && senha === DEMO_CLIENT_PASSWORD) {
+            return res.redirect(303, "/cliente/inicio");
+        }
+
+        return res.status(401).render("pages/autenticacao", {
+            perfil,
+            etapa,
+            email: typeof dados.email === "string" ? dados.email.trim() : "",
+            dados,
+            mensagem: "Usuário ou senha incorretos.",
+            erro: true,
+            tituloPerfil: "Cliente",
+            rotaCadastro: `/${perfil}/cadastro`,
+            rotaEntrar: `/${perfil}/entrar`
+        });
+    }
+
     const mensagem = erros.length
         ? erros.map((erro) => erro.msg).join(" ")
         : etapa === "entrar"
@@ -39,6 +63,9 @@ function processAuth(req, res, perfil, etapa) {
 }
 
 router.get("/", (req, res) => res.render("pages/index"));
+router.get("/cliente/inicio", (req, res) => res.render("pages/cliente-home", { nomeCliente: "fulano" }));
+router.get("/cliente/explorar", (req, res) => res.render("pages/cliente-explorar"));
+router.get("/cliente/emergencia", (req, res) => res.render("pages/cliente-emergencia"));
 router.get("/cliente/entrar", (req, res) => renderAuth(req, res, "cliente", "entrar"));
 router.get("/cliente/cadastro", (req, res) => renderAuth(req, res, "cliente", "cadastro"));
 router.get("/prestador/entrar", (req, res) => renderAuth(req, res, "prestador", "entrar"));
@@ -56,6 +83,16 @@ const validarSenha = body("senha")
 
 const validarLogin = [
     validarEmail,
+    validarSenha
+];
+
+const validarLoginCliente = [
+    body("email")
+        .isString().withMessage("Informe seu e-mail ou o usuário steply.").bail()
+        .trim()
+        .notEmpty().withMessage("Informe seu e-mail ou o usuário steply.").bail()
+        .custom((value) => value.toLowerCase() === DEMO_CLIENT_LOGIN || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        .withMessage("Informe um e-mail válido ou o usuário steply."),
     validarSenha
 ];
 
@@ -77,7 +114,7 @@ function rotaAuth(perfil, etapa, validadores) {
     ];
 }
 
-router.post("/cliente/entrar", rotaAuth("cliente", "entrar", validarLogin));
+router.post("/cliente/entrar", rotaAuth("cliente", "entrar", validarLoginCliente));
 router.post("/cliente/cadastro", rotaAuth("cliente", "cadastro", validarCadastro));
 router.post("/prestador/entrar", rotaAuth("prestador", "entrar", validarLogin));
 router.post("/prestador/cadastro", rotaAuth("prestador", "cadastro", validarCadastro));

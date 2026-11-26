@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Emergência — Steply</title>
+    <link rel="stylesheet" href="/css/cliente-home.css">
+    <link rel="stylesheet" href="/css/cliente-pages.css">
+</head>
+<body>
+    <main class="client-home client-page client-page--emergency">
+        <header class="client-header">
+            <a class="client-header__brand" href="/cliente/inicio" aria-label="Steply — início">
+                <img src="/assets/logo.png" alt="Steply">
+            </a>
+            <p class="client-header__location"><span aria-hidden="true">⌖</span> Sua região</p>
+            <img class="client-header__profile" src="/assets/cliente/perfil.png" alt="Perfil do cliente">
+        </header>
+
+        <a class="client-page__back" href="/cliente/inicio" aria-label="Voltar para o início">‹</a>
+        <h1 class="visually-hidden">Serviços para atendimento de emergência</h1>
+
+        <section class="emergency-panel" aria-label="Serviços disponíveis para atendimento">
+            <% const servicosEmergencia = [
+                { nome: "Manicure", negocio: "Studio Nails", avaliacao: "4,9 (142)", distancia: "3,8 km", imagem: "/assets/service-manicure.png" },
+                { nome: "Encanador", negocio: "Atendimento local", avaliacao: "4,8", distancia: "2,4 km", imagem: "/assets/service-encanador.png" },
+                { nome: "Eletricista", negocio: "Atendimento local", avaliacao: "4,8", distancia: "3,1 km", imagem: "/assets/cliente/servico-eletricista.jpg" }
+            ]; %>
+            <% servicosEmergencia.forEach((servico) => { %>
+                <article class="emergency-card">
+                    <img class="emergency-card__image" src="<%= servico.imagem %>" alt="<%= servico.nome %>">
+                    <div class="emergency-card__details">
+                        <h2><%= servico.nome %></h2>
+                        <p><%= servico.negocio %></p>
+                        <span class="emergency-card__rating"><span aria-hidden="true">★</span> <%= servico.avaliacao %></span>
+                        <span class="emergency-card__distance"><span aria-hidden="true">⌖</span> <%= servico.distancia %></span>
+                        <button class="emergency-card__action" type="button">Agendar</button>
+                    </div>
+                </article>
+            <% }); %>
+        </section>
+
+        <nav class="client-bottom-nav" aria-label="Navegação principal">
+            <a href="/cliente/inicio"><span aria-hidden="true">⌂</span>Home</a>
+            <a href="/cliente/explorar"><span aria-hidden="true">⌕</span>Buscar</a>
+        </nav>
+    </main>
+</body>
+</html>

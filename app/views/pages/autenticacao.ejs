@@ -122,7 +122,7 @@
                         <% } else { %>
                             <label class="auth-input">
                                 <span class="visually-hidden">Email</span>
-                                <input type="email" name="email" placeholder="Email:" autocomplete="email" value="<%= email %>" required>
+                                <input type="<%= perfil === 'cliente' ? 'text' : 'email' %>" name="email" placeholder="<%= perfil === 'cliente' ? 'Email ou usuário:' : 'Email:' %>" autocomplete="<%= perfil === 'cliente' ? 'username' : 'email' %>" inputmode="email" value="<%= email %>" required>
                             </label>
                             <label class="auth-input auth-input--password">
                                 <span class="visually-hidden">Senha</span>
