@@ -161,50 +161,39 @@ function cnpjValido(valor) {
     return digitoDois === Number(cnpj[13]);
 }
 
+const validarEmailCadastro = body("email")
+    .isString().withMessage("Informe seu e-mail.").bail()
+    .trim()
+    .notEmpty().withMessage("Informe seu e-mail.").bail()
+    .custom((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+    .withMessage("Informe um e-mail válido.");
+
 const validarCadastroCliente = [
-    validarEmail,
+    validarEmailCadastro,
     body("nome")
-        .isString().withMessage("Informe seu nome completo.").bail()
-        .trim()
-        .matches(/^\S+(?:\s+\S+)+$/).withMessage("Informe seu nome completo.")
-        .bail()
-        .isLength({ min: 3, max: 120 }).withMessage("O nome completo deve ter entre 3 e 120 caracteres."),
+        .isString().withMessage("Informe seu nome.").bail()
+        .trim().notEmpty().withMessage("Informe seu nome."),
     body("cpf")
         .isString().withMessage("Informe seu CPF.").bail()
         .trim()
-        .custom(cpfValido).withMessage("Informe um CPF válido."),
+        .custom((value) => String(value).replace(/\D/g, "").length === 11)
+        .withMessage("Informe um CPF com 11 dígitos."),
     body("nascimento")
         .isString().withMessage("Informe sua data de nascimento.").bail()
-        .custom((value) => {
-            const data = dataBrasileiraValida(value);
-            return data !== null;
-        }).withMessage("Informe uma data de nascimento válida.").bail()
-        .custom((value) => {
-            const data = dataBrasileiraValida(value);
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
-            return data <= hoje;
-        }).withMessage("A data de nascimento não pode ser futura."),
+        .trim().notEmpty().withMessage("Informe sua data de nascimento."),
     body("bairro")
         .isString().withMessage("Informe seu bairro.").bail()
-        .trim()
-        .isLength({ min: 2, max: 100 }).withMessage("O bairro deve ter entre 2 e 100 caracteres."),
+        .trim().notEmpty().withMessage("Informe seu bairro."),
     body("cidade")
         .isString().withMessage("Informe sua cidade.").bail()
-        .trim()
-        .isLength({ min: 2, max: 100 }).withMessage("A cidade deve ter entre 2 e 100 caracteres."),
+        .trim().notEmpty().withMessage("Informe sua cidade."),
     body("cep")
         .isString().withMessage("Informe seu CEP.").bail()
-        .trim()
-        .matches(/^\d{5}-?\d{3}$/).withMessage("Informe um CEP válido."),
-    body("telefone")
-        .optional({ values: "falsy" })
-        .isString().withMessage("Informe um telefone válido.").bail()
-        .custom((value) => /^\d{10,11}$/.test(String(value).replace(/\D/g, "")))
-        .withMessage("Informe um telefone válido com 10 ou 11 dígitos."),
+        .trim().notEmpty().withMessage("Informe seu CEP."),
+    body("telefone").optional({ values: "falsy" }).isString().withMessage("Informe um telefone válido."),
     body("senha")
-        .isString().withMessage("A senha deve ter pelo menos 8 caracteres.").bail()
-        .isLength({ min: 8 }).withMessage("A senha deve ter pelo menos 8 caracteres."),
+        .isString().withMessage("Informe sua senha.").bail()
+        .notEmpty().withMessage("Informe sua senha."),
     body("confirmar-senha")
         .isString().withMessage("Confirme sua senha.").bail()
         .custom((value, { req }) => value === req.body?.senha)
@@ -212,52 +201,49 @@ const validarCadastroCliente = [
 ];
 
 const validarCadastroPrestador = [
-    validarEmail,
+    validarEmailCadastro,
     body("nome")
-        .isString().withMessage("Informe seu nome completo.").bail()
-        .trim().matches(/^\S+(?:\s+\S+)+$/).withMessage("Informe seu nome completo."),
+        .isString().withMessage("Informe seu nome.").bail()
+        .trim().notEmpty().withMessage("Informe seu nome."),
     body("nome-comercial")
         .isString().withMessage("Informe o nome comercial.").bail()
-        .trim().isLength({ min: 2, max: 120 }).withMessage("O nome comercial deve ter entre 2 e 120 caracteres."),
+        .trim().notEmpty().withMessage("Informe o nome comercial."),
     body("senha")
-        .isString().withMessage("A senha deve ter pelo menos 8 caracteres.").bail()
-        .isLength({ min: 8 }).withMessage("A senha deve ter pelo menos 8 caracteres."),
+        .isString().withMessage("Informe sua senha.").bail()
+        .notEmpty().withMessage("Informe sua senha."),
     body("confirmar-senha")
         .isString().withMessage("Confirme sua senha.").bail()
-        .custom((value, { req }) => value === req.body?.senha).withMessage("As senhas não coincidem."),
+        .custom((value, { req }) => value === req.body?.senha)
+        .withMessage("As senhas não coincidem."),
     body("nascimento")
         .isString().withMessage("Informe sua data de nascimento.").bail()
-        .custom((value) => dataBrasileiraValida(value) !== null)
-        .withMessage("Informe uma data de nascimento válida no formato dd/mm/aaaa."),
+        .trim().notEmpty().withMessage("Informe sua data de nascimento."),
     body("documento")
         .isString().withMessage("Informe CPF ou CNPJ.").bail()
         .trim()
         .custom((value) => {
-            const numeros = value.replace(/\D/g, "");
-            return numeros.length === 11 ? cpfValido(numeros) : numeros.length === 14 ? cnpjValido(numeros) : false;
-        }).withMessage("Informe um CPF ou CNPJ válido."),
+            const quantidade = String(value).replace(/\D/g, "").length;
+            return quantidade === 11 || quantidade === 14;
+        }).withMessage("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos."),
     body("bairro")
         .isString().withMessage("Informe seu bairro.").bail()
-        .trim().isLength({ min: 2, max: 100 }).withMessage("O bairro deve ter entre 2 e 100 caracteres."),
+        .trim().notEmpty().withMessage("Informe seu bairro."),
     body("cidade")
         .isString().withMessage("Informe sua cidade.").bail()
-        .trim().isLength({ min: 2, max: 100 }).withMessage("A cidade deve ter entre 2 e 100 caracteres."),
+        .trim().notEmpty().withMessage("Informe sua cidade."),
     body("cep")
         .isString().withMessage("Informe seu CEP.").bail()
-        .trim().matches(/^\d{5}-?\d{3}$/).withMessage("Informe um CEP válido."),
-    body("telefone")
-        .optional({ values: "falsy" })
-        .custom((value) => /^\d{10,11}$/.test(String(value).replace(/\D/g, "")))
-        .withMessage("Informe um telefone válido com 10 ou 11 dígitos."),
+        .trim().notEmpty().withMessage("Informe seu CEP."),
+    body("telefone").optional({ values: "falsy" }).isString().withMessage("Informe um telefone válido."),
     body("numero")
         .isString().withMessage("Informe o número do endereço.").bail()
-        .trim().matches(/^\d{1,10}$|^S\/N$/i).withMessage("Informe um número válido."),
+        .trim().notEmpty().withMessage("Informe o número do endereço."),
     body("estado")
         .isString().withMessage("Informe o estado.").bail()
-        .trim().isLength({ min: 2, max: 40 }).withMessage("Informe um estado válido."),
+        .trim().notEmpty().withMessage("Informe o estado."),
     body("rua")
         .isString().withMessage("Informe a rua.").bail()
-        .trim().isLength({ min: 2, max: 150 }).withMessage("A rua deve ter entre 2 e 150 caracteres.")
+        .trim().notEmpty().withMessage("Informe a rua.")
 ];
 
 /* cadastro de cliente adicional: fim dos validadores */

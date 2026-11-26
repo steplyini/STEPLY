@@ -132,7 +132,7 @@
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">Nome completo</span>
-                                    <input type="text" name="nome" placeholder="Nome completo:" autocomplete="name" minlength="3" maxlength="120" value="<%= dados.nome || '' %>" aria-invalid="<%= errosPorCampo?.nome ? 'true' : 'false' %>" required>
+                                    <input type="text" name="nome" placeholder="Nome completo:" autocomplete="name" maxlength="120" value="<%= dados.nome || '' %>" aria-invalid="<%= errosPorCampo?.nome ? 'true' : 'false' %>" required>
                                 </label>
                                 <% if (errosPorCampo?.nome) { %><small class="auth-field-error"><%= errosPorCampo.nome %></small><% } %>
                             </div>
@@ -146,21 +146,21 @@
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">CPF</span>
-                                    <input type="text" name="cpf" placeholder="CPF:" autocomplete="off" inputmode="numeric" minlength="11" maxlength="14" value="<%= dados.cpf || '' %>" aria-invalid="<%= errosPorCampo?.cpf ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d{1,2})$/,'$1-$2')" required>
+                                    <input type="text" name="cpf" placeholder="CPF:" autocomplete="off" inputmode="numeric" maxlength="14" value="<%= dados.cpf || '' %>" aria-invalid="<%= errosPorCampo?.cpf ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d)/,'$1.$2').replace(/(\\d{3})(\\d{1,2})$/,'$1-$2')" required>
                                 </label>
                                 <% if (errosPorCampo?.cpf) { %><small class="auth-field-error"><%= errosPorCampo.cpf %></small><% } %>
                             </div>
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">Data de nascimento</span>
-                                    <input type="text" name="nascimento" placeholder="Data de nascimento (dd/mm/aaaa):" aria-label="Data de nascimento" autocomplete="bday" inputmode="numeric" maxlength="10" value="<%= dados.nascimento || '' %>" aria-invalid="<%= errosPorCampo?.nascimento ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(\\d{2})(\\d)/,'$1/$2').replace(/(\\d{2})(\\d)/,'$1/$2')" required>
+                                    <input type="text" name="nascimento" placeholder="Data de nascimento (dd/mm/aaaa):" aria-label="Data de nascimento" autocomplete="bday" value="<%= dados.nascimento || '' %>" aria-invalid="<%= errosPorCampo?.nascimento ? 'true' : 'false' %>" required>
                                 </label>
                                 <% if (errosPorCampo?.nascimento) { %><small class="auth-field-error"><%= errosPorCampo.nascimento %></small><% } %>
                             </div>
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">Bairro</span>
-                                    <input type="text" name="bairro" placeholder="Bairro:" autocomplete="address-level3" minlength="2" maxlength="100" value="<%= dados.bairro || '' %>" aria-invalid="<%= errosPorCampo?.bairro ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-bairros" required>
+                                    <input type="text" name="bairro" placeholder="Bairro:" autocomplete="address-level3" maxlength="100" value="<%= dados.bairro || '' %>" aria-invalid="<%= errosPorCampo?.bairro ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-bairros" required>
                                 </label>
                                 <ul class="auth-suggestions" id="sugestoes-bairros" role="listbox" hidden></ul>
                                 <% if (errosPorCampo?.bairro) { %><small class="auth-field-error"><%= errosPorCampo.bairro %></small><% } %>
@@ -168,7 +168,7 @@
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">Cidade</span>
-                                    <input type="text" name="cidade" placeholder="Cidade:" autocomplete="address-level2" minlength="2" maxlength="100" value="<%= dados.cidade || '' %>" aria-invalid="<%= errosPorCampo?.cidade ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-cidades" required>
+                                    <input type="text" name="cidade" placeholder="Cidade:" autocomplete="address-level2" maxlength="100" value="<%= dados.cidade || '' %>" aria-invalid="<%= errosPorCampo?.cidade ? 'true' : 'false' %>" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-cidades" required>
                                 </label>
                                 <ul class="auth-suggestions" id="sugestoes-cidades" role="listbox" hidden></ul>
                                 <% if (errosPorCampo?.cidade) { %><small class="auth-field-error"><%= errosPorCampo.cidade %></small><% } %>
@@ -176,7 +176,7 @@
                             <div class="auth-field">
                                 <label class="auth-input">
                                     <span class="visually-hidden">CEP</span>
-                                    <input type="text" name="cep" placeholder="CEP:" autocomplete="postal-code" inputmode="numeric" minlength="8" maxlength="9" value="<%= dados.cep || '' %>" aria-invalid="<%= errosPorCampo?.cep ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{5})(\\d)/,'$1-$2')" required>
+                                    <input type="text" name="cep" placeholder="CEP:" autocomplete="postal-code" maxlength="9" value="<%= dados.cep || '' %>" aria-invalid="<%= errosPorCampo?.cep ? 'true' : 'false' %>" oninput="this.value=this.value.replace(/\\D/g,'').replace(/(\\d{5})(\\d)/,'$1-$2')" required>
                                 </label>
                                 <% if (errosPorCampo?.cep) { %><small class="auth-field-error"><%= errosPorCampo.cep %></small><% } %>
                             </div>
@@ -190,14 +190,14 @@
                             <div class="auth-field">
                                 <label class="auth-input auth-input--password">
                                     <span class="visually-hidden">Senha</span>
-                                    <input type="password" name="senha" placeholder="Senha:" autocomplete="new-password" minlength="8" aria-invalid="<%= errosPorCampo?.senha ? 'true' : 'false' %>" required>
+                                    <input type="password" name="senha" placeholder="Senha:" autocomplete="new-password" aria-invalid="<%= errosPorCampo?.senha ? 'true' : 'false' %>" required>
                                 </label>
                                 <% if (errosPorCampo?.senha) { %><small class="auth-field-error"><%= errosPorCampo.senha %></small><% } %>
                             </div>
                             <div class="auth-field">
                                 <label class="auth-input auth-input--confirm">
                                     <span class="visually-hidden">Confirmar senha</span>
-                                    <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" minlength="8" aria-invalid="<%= errosPorCampo?.['confirmar-senha'] ? 'true' : 'false' %>" required>
+                                    <input type="password" name="confirmar-senha" placeholder="Confirmar Senha:" autocomplete="new-password" aria-invalid="<%= errosPorCampo?.['confirmar-senha'] ? 'true' : 'false' %>" required>
                                 </label>
                                 <% if (errosPorCampo?.['confirmar-senha']) { %><small class="auth-field-error"><%= errosPorCampo['confirmar-senha'] %></small><% } %>
                             </div>
